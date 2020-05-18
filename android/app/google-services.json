@@ -1,0 +1,41 @@
+{
+    "project_info": {
+        "project_number": "877590147522",
+        "firebase_url": "https://market-online-app.firebaseio.com",
+        "project_id": "market-online-app",
+        "storage_bucket": "market-online-app.appspot.com"
+    },
+    "client": [{
+        "client_info": {
+            "mobilesdk_app_id": "1:877590147522:android:020657814bea998930665b",
+            "android_client_info": {
+                "package_name": "com.example.market_online_app"
+            }
+        },
+        "oauth_client": [{
+                "client_id": "877590147522-4qj4q6qrc3ida677k252vj69qaag3pbn.apps.googleusercontent.com",
+                "client_type": 1,
+                "android_info": {
+                    "package_name": "com.example.market_online_app",
+                    "certificate_hash": "9a8073658808c7c19a56289e0448897e444caf67"
+                }
+            },
+            {
+                "client_id": "877590147522-b5fj5vt9itn8htv6tf5brepqtdcb0pv8.apps.googleusercontent.com",
+                "client_type": 3
+            }
+        ],
+        "api_key": [{
+            "current_key": "AIzaSyB6yPfpnJaqCkLrGmZvAkzthNmMisSSlSk"
+        }],
+        "services": {
+            "appinvite_service": {
+                "other_platform_oauth_client": [{
+                    "client_id": "877590147522-b5fj5vt9itn8htv6tf5brepqtdcb0pv8.apps.googleusercontent.com",
+                    "client_type": 3
+                }]
+            }
+        }
+    }],
+    "configuration_version": "1"
+}
