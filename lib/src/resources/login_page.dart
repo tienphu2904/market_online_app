@@ -1,76 +1,77 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:market_online_app/src/services/auth_service.dart';
 
-class DemoLoginHome extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   @override
-  _DemoLoginHomeState createState() => _DemoLoginHomeState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _DemoLoginHomeState extends State<DemoLoginHome> {
-  final formKey = new GlobalKey<FormState>();
-  String phoneNo, verificationId, status;
+class _LoginPageState extends State<LoginPage> {
+  TextEditingController _phoneController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          padding: const EdgeInsets.all(20.0),
           child: Form(
-            key: formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(height: 50),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.blue),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: TextFormField(
                     keyboardType: TextInputType.phone,
+                    controller: _phoneController,
                     decoration: InputDecoration(
-                      hintText: "Mobile number",
+                      labelText: "Số điện thoại",
+                      prefixIcon: Container(
+                        child: Icon(Icons.phone),
+                        height: 50.0,
+                      ),
                       border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 1.0),
-                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                        borderSide: BorderSide(width: 1, color: Colors.black),
                       ),
                     ),
-                    onChanged: (val) {
-                      setState(() {
-                        this.phoneNo = val;
-                      });
-                    },
                   ),
                 ),
-                SizedBox(
-                  height: 60.0,
-                  width: double.infinity,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 0),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: TextFormField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: "Mật khẩu",
+                      prefixIcon: Container(
+                        height: 50.0,
+                        child: Icon(Icons.lock),
+                      ),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Colors.black),
+                        borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: SizedBox(
+                    height: 60.0,
+                    width: double.infinity,
                     child: RaisedButton(
-                      onPressed: () {
-                        verifyPhone(phoneNo);
-                      },
-                      color: Colors.blue,
+                      color: Colors.red[400],
+                      onPressed: _onLoginClicked,
                       child: Text(
-                        "LOG IN",
+                        "ĐĂNG NHẬP",
                         style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
                       ),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0)),
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      ),
                     ),
                   ),
                 )
@@ -82,32 +83,7 @@ class _DemoLoginHomeState extends State<DemoLoginHome> {
     );
   }
 
-  Future<void> verifyPhone(phoneNo) async {
-    final PhoneVerificationCompleted verificationCompleted =
-        (AuthCredential authResult) {
-      AuthService().signIn(authResult);
-    };
-
-    final PhoneVerificationFailed verificationFailed =
-        (AuthException authException) {
-      print('${authException.message}');
-    };
-
-    final PhoneCodeSent smsSent = (String verId, [int forceResend]) async {
-      this.verificationId = verId;
-    };
-
-    final PhoneCodeAutoRetrievalTimeout autoTimoeout = (String verId) {
-      this.verificationId = verId;
-    };
-
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: phoneNo,
-      timeout: Duration(seconds: 5),
-      verificationCompleted: verificationCompleted,
-      verificationFailed: verificationFailed,
-      codeSent: smsSent,
-      codeAutoRetrievalTimeout: autoTimoeout,
-    );
+  void _onLoginClicked() {
+    
   }
 }
