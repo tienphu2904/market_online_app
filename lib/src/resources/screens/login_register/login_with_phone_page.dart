@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:market_online_app/src/resources/screens/home_screen.dart';
 import 'package:market_online_app/src/services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginWithPhonePage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginWithPhonePageState createState() => _LoginWithPhonePageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginWithPhonePageState extends State<LoginWithPhonePage> {
   String phoneNo;
   String smsCode;
   String verificationId;
@@ -44,23 +44,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                //   child: TextFormField(
-                //     obscureText: true,
-                //     decoration: InputDecoration(
-                //       labelText: "Mật khẩu",
-                //       prefixIcon: Container(
-                //         height: 50.0,
-                //         child: Icon(Icons.lock),
-                //       ),
-                //       border: OutlineInputBorder(
-                //         borderSide: BorderSide(width: 1, color: Colors.black),
-                //         borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: SizedBox(

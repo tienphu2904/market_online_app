@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:market_online_app/src/resources/login_page.dart';
-import 'package:market_online_app/src/resources/register_page.dart';
+import 'login_with_email_page.dart';
+import 'register_page.dart';
+
+
 
 class TabLoginRegister extends StatefulWidget {
   @override
@@ -47,7 +49,7 @@ class _TabLoginRegisterState extends State<TabLoginRegister> {
         ),
         body: TabBarView(
           children: <Widget>[
-            LoginPage(),
+            LoginWithEmailPage(),
             RegisterPage(),
           ],
         ),

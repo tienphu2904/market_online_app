@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:market_online_app/src/resources/screens/home_screen.dart';
-import 'package:market_online_app/src/resources/tab_login_register.dart';
+import 'package:market_online_app/src/resources/screens/login_register/tab_login_register.dart';
 
 class AuthService {
   handleAuth() {
@@ -24,4 +24,5 @@ class AuthService {
   void signIn(AuthCredential authCredential) {
     FirebaseAuth.instance.signInWithCredential(authCredential);
   }
+
 }
