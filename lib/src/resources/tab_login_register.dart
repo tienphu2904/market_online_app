@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:market_online_app/src/resources/login_page.dart';
 import 'package:market_online_app/src/resources/register_page.dart';
 
-class TabLoginRegister extends StatelessWidget {
+class TabLoginRegister extends StatefulWidget {
+  @override
+  _TabLoginRegisterState createState() => _TabLoginRegisterState();
+}
+
+class _TabLoginRegisterState extends State<TabLoginRegister> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -11,7 +16,7 @@ class TabLoginRegister extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.close),
-            onPressed: _onClosedPressed,
+            onPressed: () {},
           ),
           title: Text("Đăng nhập / Đăng ký"),
           bottom: TabBar(
@@ -50,5 +55,8 @@ class TabLoginRegister extends StatelessWidget {
     );
   }
 
-  void _onClosedPressed() {}
+  _onClosedPressed() {
+    // Navigator.of(context)
+    //     .push(MaterialPageRoute(builder: (context) => HomeScreen()));
+  }
 }

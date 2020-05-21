@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:market_online_app/src/resources/tab_login_register.dart';
+import 'package:market_online_app/src/services/auth_service.dart';
 
 
 
@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TabLoginRegister(),
+      home: AuthService().handleAuth(),
     );
   }
 }

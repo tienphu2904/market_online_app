@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:market_online_app/src/services/auth_service.dart';
 
 class HomeDrawer extends StatelessWidget {
   @override
@@ -87,8 +88,19 @@ class HomeDrawer extends StatelessWidget {
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
           ),
+           ListTile(
+            title: Text(
+              "Đăng xuất",
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+            ),
+            onTap: _signOut,
+          ),
         ],
       ),
     );
+  }
+
+  _signOut() {
+    AuthService().signOut();
   }
 }

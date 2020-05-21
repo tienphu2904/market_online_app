@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:market_online_app/src/resources/screens/home_screen.dart';
+import 'package:market_online_app/src/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -6,7 +9,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _phoneController = new TextEditingController();
+  String phoneNo;
+  String smsCode;
+  String verificationId;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,9 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: TextFormField(
                     keyboardType: TextInputType.phone,
-                    controller: _phoneController,
+                    onChanged: (val) {
+                      this.phoneNo = val;
+                    },
                     decoration: InputDecoration(
                       labelText: "Số điện thoại",
                       prefixIcon: Container(
@@ -37,23 +44,23 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: "Mật khẩu",
-                      prefixIcon: Container(
-                        height: 50.0,
-                        child: Icon(Icons.lock),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: Colors.black),
-                        borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                      ),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                //   child: TextFormField(
+                //     obscureText: true,
+                //     decoration: InputDecoration(
+                //       labelText: "Mật khẩu",
+                //       prefixIcon: Container(
+                //         height: 50.0,
+                //         child: Icon(Icons.lock),
+                //       ),
+                //       border: OutlineInputBorder(
+                //         borderSide: BorderSide(width: 1, color: Colors.black),
+                //         borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: SizedBox(
@@ -61,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     child: RaisedButton(
                       color: Colors.red[400],
-                      onPressed: _onLoginClicked,
+                      onPressed: verifyPhone,
                       child: Text(
                         "ĐĂNG NHẬP",
                         style: TextStyle(
@@ -83,7 +90,32 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _onLoginClicked() {
-    
+  Future<void> verifyPhone() async {
+    final PhoneVerificationCompleted verificationCompleted =
+        (AuthCredential authResult) {
+      AuthService().signIn(authResult);
+    };
+
+    final PhoneVerificationFailed verificationFailed =
+        (AuthException authException) {
+      print('${authException.message}');
+    };
+
+    final PhoneCodeSent smsSent = (String verId, [int forceResend]) async {
+      this.verificationId = verId;
+    };
+
+    final PhoneCodeAutoRetrievalTimeout autoTimoeout = (String verId) {
+      this.verificationId = verId;
+    };
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNo,
+      timeout: Duration(seconds: 5),
+      verificationCompleted: verificationCompleted,
+      verificationFailed: verificationFailed,
+      codeSent: smsSent,
+      codeAutoRetrievalTimeout: autoTimoeout,
+    );
   }
 }

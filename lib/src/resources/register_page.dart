@@ -62,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     FlatButton(
                       onPressed: _toggleShowPass,
                       child: Text(
-                        _showPass ? "Ẩn" : "Hiện",
+                        _showPass ? "Hiện" : "Ẩn",
                         style: TextStyle(
                           color: Colors.blue,
                           fontSize: 13.0,
