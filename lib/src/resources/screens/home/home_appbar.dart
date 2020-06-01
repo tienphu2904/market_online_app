@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 
 class SliverHomeAppBar extends StatelessWidget {
-  SliverHomeAppBar({this.onMenuIconPressed, this.onLogoutPressed});
+  SliverHomeAppBar({this.onMenuIconPressed, this.onShoppingCartPressed});
   final VoidCallback onMenuIconPressed;
-  final VoidCallback onLogoutPressed;
+  final VoidCallback onShoppingCartPressed;
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
       title: Center(
-        child: Text("CHỢ ONLINE"),
+        child: Container(
+          height: 30,
+          child: CircleAvatar(
+            child: Center(
+              child: FlutterLogo(),
+            ),
+            backgroundColor: Colors.white,
+          ),
+        ),
       ),
       leading: IconButton(
         icon: Icon(Icons.menu),
@@ -20,7 +28,7 @@ class SliverHomeAppBar extends StatelessWidget {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.shopping_cart),
-              onPressed: onLogoutPressed,
+              onPressed: onShoppingCartPressed,
             ),
             Positioned(
               top: 8.0,

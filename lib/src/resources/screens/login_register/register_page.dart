@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:market_online_app/src/blocs/auth_bloc.dart';
-import 'package:market_online_app/src/resources/screens/login_register/custom_textfield.dart';
+import 'package:market_online_app/src/custom/custom_textfield.dart';
+import 'package:market_online_app/src/resources/dialog/loading_dialog.dart';
+import 'package:market_online_app/src/resources/dialog/msg_dialog.dart';
+import 'package:market_online_app/src/resources/screens/home_screen.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -8,28 +13,16 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  bool _showPass = false;
-  String _mail;
-  String _phone;
-  String _password;
-  String _name;
   TextEditingController _mailController = new TextEditingController();
-  TextEditingController _nameController = new TextEditingController();
-  TextEditingController _passController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
+  TextEditingController _passController = new TextEditingController();
+  TextEditingController _nameController = new TextEditingController();
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   AuthBloc authBloc = new AuthBloc();
 
-  PersistentBottomSheetController _sheetController;
-  bool _autoValidate = false;
+  bool _showPass = true;
 
-  void initState() {
-    super.initState();
-  }
-
-  void dispose() {
+  void dispose(){
     super.dispose();
     authBloc.dispose();
   }
@@ -37,124 +30,125 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(20.0),
-          child: Form(
-            key: _formKey,
-            autovalidate: _autoValidate,
-            child: Column(
-              children: <Widget>[
-                StreamBuilder(
-                  stream: authBloc.mailSteam,
-                  builder: (context, snapshot) => CustomTextField(
-                    onSaved: (input) {
-                      _mail = input;
-                    },
-                    controller: _mailController,
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: StreamBuilder(
+                  stream: authBloc.mailStream,
+                  builder: (context, snapshot) {
+                    return CustomTextField(
+                      controller: _mailController,
+                      errorText: snapshot.hasError ? snapshot.error : null,
+                      hint: "Email",
+                      icon: Icon(
+                        Icons.mail,
+                      ),
+                    );
+                  }
+                ),
+              ),
+              Stack(
+                alignment: AlignmentDirectional.centerEnd,
+                children: <Widget>[
+                  StreamBuilder(
+                    stream: authBloc.passStream,
+                    builder: (context, snapshot) {
+                      return CustomTextField(
+                        controller: _passController,
+                        errorText: snapshot.hasError ? snapshot.error : null,
+                        hint: "Mật khẩu",
+                        obscure: !_showPass,
+                        icon: Icon(
+                          Icons.lock,
+                        ),
+                      );
+                    }
+                  ),
+                  FlatButton(
+                    onPressed: _onShowPassPressed,
+                    child: Text(
+                      _showPass ? "Ẩn" : "Hiện",
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                  ),
+                ],
+              ),
+              StreamBuilder(
+                stream: authBloc.phoneStream,
+                builder: (context, snapshot) {
+                  return CustomTextField(
+                    controller: _phoneController,
                     errorText: snapshot.hasError ? snapshot.error : null,
-                    icon: Icon(Icons.email),
-                    hint: "Email",
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: StreamBuilder(
-                    stream: authBloc.phoneController,
-                    builder: (context, snapshot) =>CustomTextField(
-                      onSaved: (input) {
-                        _phone = input;
-                      },
-                      controller: _phoneController,
-                      errorText: snapshot.hasError ? snapshot.error : null,
-                      icon: Icon(Icons.phone),
-                      hint: "Số điện thoại",
+                    hint: "Điện thoại",
+                    icon: Icon(Icons.phone),
+                    textInputType: TextInputType.phone,
+                  );
+                }
+              ),
+              StreamBuilder(
+                stream: authBloc.nameStream,
+                builder: (context, snapshot) {
+                  return CustomTextField(
+                    controller: _nameController,
+                    errorText: snapshot.hasError ? snapshot.error : null,
+                    hint: "Họ tên",
+                    icon: Icon(Icons.person),
+                  );
+                }
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: SizedBox(
+                  height: 60,
+                  width: double.infinity,
+                  child: RaisedButton(
+                    color: Colors.redAccent,
+                    onPressed: _onSignUpClicked,
+                    child: Text(
+                      "ĐĂNG KÝ",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: Stack(
-                    alignment: AlignmentDirectional.centerEnd,
-                    children: <Widget>[
-                      StreamBuilder(
-                        stream: authBloc.passController,
-                        builder: (context, snapshot) => CustomTextField(
-                          obscure: !_showPass,
-                          onSaved: (input) {
-                            _password = input;
-                          },
-                          controller: _passController,
-                          errorText: snapshot.hasError ? snapshot.error : null,
-                          icon: Icon(Icons.lock),
-                          hint: "Mật khẩu",
-                        ),
-                      ),
-                      FlatButton(
-                        onPressed: _onShowPassToggle,
-                        child: Text(
-                          _showPass ? "Ẩn" : "Hiện",
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 13.0,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: StreamBuilder(
-                    stream: authBloc.nameController,
-                    builder: (context, snapshot) => CustomTextField(
-                      onSaved: (input) {
-                        _name = input;
-                      },
-                      controller: _nameController,
-                      errorText: snapshot.hasError ? snapshot.error : null,
-                      icon: Icon(Icons.person),
-                      hint: "Họ tên",
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: SizedBox(
-                    height: 60.0,
-                    width: double.infinity,
-                    child: RaisedButton(
-                      onPressed: _validateSignUpInput,
-                      color: Colors.redAccent,
-                      child: Text(
-                        "ĐĂNG KÝ",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),
     );
   }
 
-  void _onShowPassToggle(){
-    setState( () {
+  _onShowPassPressed() {
+    setState(() {
       _showPass = !_showPass;
     });
   }
 
-  void _validateSignUpInput() {
-    if(authBloc.isValid(_mail, _phone, _password, _name))
-      return;
+  _onSignUpClicked() {
+    String mail = _mailController.text;
+    String pass = _passController.text;
+    String phone = _phoneController.text;
+    String name = _nameController.text;
+    if(authBloc.isValid(mail, pass, phone, name)) {
+      authBloc.signUp(mail, pass, phone, name, () {
+        LoadingDialog.hideLoadingDialog(context);
+        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
+      }, (msg) {
+        MsgDialog.showMsgDialog(context, "Đăng ký", msg);
+      });
+    }
   }
 }
