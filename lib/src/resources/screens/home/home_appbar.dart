@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SliverHomeAppBar extends StatelessWidget {
-  SliverHomeAppBar({this.onMenuIconPressed, this.onShoppingCartPressed});
+  SliverHomeAppBar({this.onMenuIconPressed, this.onShoppingCartPressed, this.onSearchPressed});
   final VoidCallback onMenuIconPressed;
   final VoidCallback onShoppingCartPressed;
+  final VoidCallback onSearchPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +77,7 @@ class SliverHomeAppBar extends StatelessWidget {
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.search, color: Colors.grey[700]),
-                  onPressed: () {},
+                  onPressed: onSearchPressed,
                 ),
                 Expanded(
                   child: Text(

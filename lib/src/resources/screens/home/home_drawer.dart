@@ -88,19 +88,18 @@ class HomeDrawer extends StatelessWidget {
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
           ),
-           ListTile(
+          ListTile(
             title: Text(
               "Đăng xuất",
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
             ),
-            onTap: _signOut,
+            onTap: () {
+              AuthService().signOut();
+              Navigator.pushNamed(context, '/login');
+            },
           ),
         ],
       ),
     );
-  }
-
-  _signOut() {
-    AuthService().signOut();
   }
 }

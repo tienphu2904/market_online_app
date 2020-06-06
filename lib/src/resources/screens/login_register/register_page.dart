@@ -144,7 +144,6 @@ class _RegisterPageState extends State<RegisterPage> {
     String name = _nameController.text;
     if(authBloc.isValid(mail, pass, phone, name)) {
       authBloc.signUp(mail, pass, phone, name, () {
-        LoadingDialog.hideLoadingDialog(context);
         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => HomeScreen()));
       }, (msg) {
         MsgDialog.showMsgDialog(context, "Đăng ký", msg);

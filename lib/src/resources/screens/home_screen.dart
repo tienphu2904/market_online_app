@@ -3,6 +3,7 @@ import 'package:market_online_app/src/resources/screens/home/box.dart';
 import 'package:market_online_app/src/resources/screens/home/home_appbar.dart';
 import 'package:market_online_app/src/resources/screens/home/home_drawer.dart';
 import 'package:market_online_app/src/resources/screens/home/menu.dart';
+import 'package:market_online_app/src/resources/screens/search_page.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -22,6 +23,9 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverHomeAppBar(
             onMenuIconPressed: () {
               _scaffoldKey.currentState.openDrawer();
+            },
+            onSearchPressed: () {
+              Navigator.pushNamed(context, '/search');
             },
           ),
           SliverToBoxAdapter(
@@ -217,5 +221,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  gotoSearchPage(BuildContext context) {
+    
   }
 }

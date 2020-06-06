@@ -66,4 +66,8 @@ class AuthBloc {
   void signUp(String mail, String pass, String phone, String name, Function onSuccess, Function(String) onRegisterError){
     _firAuth.signUp(mail, pass, name, phone, onSuccess, onRegisterError);
   }
+
+  void signInWithMail(String email, String password, Function onSuccess, Function(String) onSignInError) {
+    _firAuth.signInWithMail(email, password, onSuccess, onSignInError);
+  }
 }

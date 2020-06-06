@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:market_online_app/src/app.dart';
+import 'package:market_online_app/src/blocs/auth_bloc.dart';
+import 'package:market_online_app/src/resources/dialog/msg_dialog.dart';
 
 class LoginWithEmailPage extends StatefulWidget {
   @override
@@ -6,6 +9,11 @@ class LoginWithEmailPage extends StatefulWidget {
 }
 
 class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
+  TextEditingController _mailController = new TextEditingController();
+  TextEditingController _passController = new TextEditingController();
+
+  AuthBloc authBloc = new AuthBloc();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,35 +27,47 @@ class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "Email",
-                      prefixIcon: Container(
-                        child: Icon(Icons.mail),
-                        height: 50.0,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                        borderSide: BorderSide(width: 1, color: Colors.black),
-                      ),
-                    ),
+                  child: StreamBuilder(
+                    stream: authBloc.mailStream,
+                    builder: (context, snapshot) {
+                      return TextFormField(
+                        controller: _mailController,
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          prefixIcon: Container(
+                            child: Icon(Icons.mail),
+                            height: 50.0,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                            borderSide: BorderSide(width: 1, color: Colors.black),
+                          ),
+                        ),
+                      );
+                    }
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: "Mật khẩu",
-                      prefixIcon: Container(
-                        height: 50.0,
-                        child: Icon(Icons.lock),
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(width: 1, color: Colors.black),
-                        borderRadius: BorderRadius.all(Radius.circular(6.0)),
-                      ),
-                    ),
+                  child: StreamBuilder(
+                    stream: authBloc.passStream,
+                    builder: (context, snapshot) {
+                      return TextFormField(
+                        controller: _passController,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          labelText: "Mật khẩu",
+                          prefixIcon: Container(
+                            height: 50.0,
+                            child: Icon(Icons.lock),
+                          ),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(width: 1, color: Colors.black),
+                            borderRadius: BorderRadius.all(Radius.circular(6.0)),
+                          ),
+                        ),
+                      );
+                    }
                   ),
                 ),
                 Container(
@@ -72,7 +92,7 @@ class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
                     width: double.infinity,
                     child: RaisedButton(
                       color: Colors.red[400],
-                      onPressed: () {},
+                      onPressed: _onLoginClick,
                       child: Text(
                         "ĐĂNG NHẬP",
                         style: TextStyle(
@@ -98,7 +118,9 @@ class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onTap: _onLoginWithPhonePressed,
+                      onTap: () {
+                        Navigator.pushNamed(context, '/phoneLogin');
+                      },
                     ),
                   ),
                 )
@@ -107,9 +129,15 @@ class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
           ),
         ),
       ),
-    );
+    ); 
   }
-
-  _onLoginWithPhonePressed() {
+  _onLoginClick() {
+    String email = _mailController.text;
+    String pass = _passController.text;
+    authBloc.signInWithMail(email, pass, () {
+      Navigator.pushNamed(context, '/home');
+    },(msg) {
+      MsgDialog.showMsgDialog(context, "Đăng nhập", msg);
+    });
   }
 }

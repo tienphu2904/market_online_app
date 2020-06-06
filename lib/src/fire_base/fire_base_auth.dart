@@ -51,4 +51,12 @@ class FirAuth {
         break;
     }
   }
+
+  void signInWithMail(String email, String password, Function onSuccess, Function(String) onSignInError) {
+    _firebaseAuth.signInWithEmailAndPassword(email: email, password: password).then((result) {
+      onSuccess();
+    }).catchError((onError) {
+      onError("Đăng nhập thất bại, vui lòng đăng nhập lại");
+    });
+  }
 }

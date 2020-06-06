@@ -18,7 +18,9 @@ class _TabLoginRegisterState extends State<TabLoginRegister> {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.close),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
           title: Text("Đăng nhập / Đăng ký"),
           bottom: TabBar(
@@ -55,10 +57,5 @@ class _TabLoginRegisterState extends State<TabLoginRegister> {
         ),
       ),
     );
-  }
-
-  _onClosedPressed() {
-    // Navigator.of(context)
-    //     .push(MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 }

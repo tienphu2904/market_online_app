@@ -16,6 +16,10 @@ class _LoginWithPhonePageState extends State<LoginWithPhonePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(icon: Icon(Icons.close), onPressed: goBack),
+        title: Text("ĐĂNG NHẬP"),
+      ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(20.0),
@@ -100,5 +104,9 @@ class _LoginWithPhonePageState extends State<LoginWithPhonePage> {
       codeSent: smsSent,
       codeAutoRetrievalTimeout: autoTimoeout,
     );
+  }
+
+  goBack() {
+    Navigator.pop(context);
   }
 }
