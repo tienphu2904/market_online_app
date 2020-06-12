@@ -22,7 +22,7 @@ class TabLoginRegister extends StatelessWidget {
                   "ĐĂNG NHẬP",
                   style: TextStyle(
                     fontSize: 15.0,
-                    color: Colors.white,
+                    color: Colors.bluesky,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
